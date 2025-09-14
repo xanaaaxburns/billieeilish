@@ -41,7 +41,7 @@ function UILib.new(options)
         AnchorPoint = Vector2.new(0.5, 0.5),
         Parent = screenGui,
         Active = true,
-        Draggable = true
+        Draggable = false
     })
     self._frame = frame
 
@@ -50,9 +50,38 @@ function UILib.new(options)
     })
     frameCorner.Parent = frame
 
-    local sidebar = create("Frame", {
-        Size = UDim2.new(0, 56, 1, 0),
+    -- Title bar (draggable area)
+    local titleBar = create("Frame", {
+        Size = UDim2.new(1, 0, 0, 40),
         Position = UDim2.new(0, 0, 0, 0),
+        BackgroundColor3 = Color3.fromRGB(28, 29, 34),
+        BorderSizePixel = 0,
+        Parent = frame,
+        Active = true,
+        Draggable = true
+    })
+    local titleBarCorner = create("UICorner", {
+        CornerRadius = UDim.new(0, 12)
+    })
+    titleBarCorner.Parent = titleBar
+
+    local title = create("TextLabel", {
+        Text = "Minimalist UI",
+        Font = Enum.Font.GothamSemibold,
+        TextSize = 22,
+        TextColor3 = Color3.fromRGB(200, 200, 210),
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, 0, 1, 0),
+        Position = UDim2.new(0, 0, 0, 0),
+        Parent = titleBar,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Center
+    })
+    self._title = title
+
+    local sidebar = create("Frame", {
+        Size = UDim2.new(0, 56, 1, -40),
+        Position = UDim2.new(0, 0, 0, 40),
         BackgroundColor3 = Color3.fromRGB(32, 34, 37),
         BorderSizePixel = 0,
         Parent = frame
@@ -62,20 +91,6 @@ function UILib.new(options)
     })
     sidebarCorner.Parent = sidebar
     self._sidebar = sidebar
-
-    local title = create("TextLabel", {
-        Text = "Minimalist UI",
-        Font = Enum.Font.GothamSemibold,
-        TextSize = 22,
-        TextColor3 = Color3.fromRGB(200, 200, 210),
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, -56, 0, 40),
-        Position = UDim2.new(0, 56, 0, 0),
-        Parent = frame,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        TextYAlignment = Enum.TextYAlignment.Center
-    })
-    self._title = title
 
     local content = create("Frame", {
         Size = UDim2.new(1, -56, 1, -40),
