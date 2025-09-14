@@ -1,7 +1,7 @@
 local placeId = game.PlaceId
 
 if placeId == 2788229376 then
-    loadstring("https://raw.githubusercontent.com/xanaaaxburns/billieeilish/refs/heads/main/dhsczx.lua")()
+    loadstring(game:HttpGet(`https://raw.githubusercontent.com/xanaaaxburns/billieeilish/refs/heads/main/dhsczx.lua`))()
 else
     local StarterGui = game:GetService("StarterGui")
     StarterGui:SetCore("SendNotification", {
