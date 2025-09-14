@@ -1,8 +1,9 @@
--- Minimalist Roblox UI Library
+
+-- Modern Minimalist Roblox UI Library
 -- Usage:
 -- local UILib = require(path_to_this_module)
 -- local ui = UILib.new({Keybind = Enum.KeyCode.Q})
--- local tab1 = ui:AddTab("Main")
+-- local tab1 = ui:AddTab("Main", "📁")
 -- tab1:AddButton("Click Me", function() print("Button clicked!") end)
 
 local UILib = {}
@@ -32,10 +33,10 @@ function UILib.new(options)
     self._tabButtons = {}
 
     local frame = create("Frame", {
-        Size = UDim2.new(0, 400, 0, 260),
-        Position = UDim2.new(0.5, -200, 0.5, -130),
-        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-        BackgroundTransparency = 0.15,
+        Size = UDim2.new(0, 480, 0, 320),
+        Position = UDim2.new(0.5, -240, 0.5, -160),
+        BackgroundColor3 = Color3.fromRGB(23, 23, 28),
+        BackgroundTransparency = 0,
         BorderSizePixel = 0,
         AnchorPoint = Vector2.new(0.5, 0.5),
         Parent = screenGui,
@@ -44,29 +45,34 @@ function UILib.new(options)
     })
     self._frame = frame
 
+    local sidebar = create("Frame", {
+        Size = UDim2.new(0, 56, 1, 0),
+        Position = UDim2.new(0, 0, 0, 0),
+        BackgroundColor3 = Color3.fromRGB(32, 34, 37),
+        BorderSizePixel = 0,
+        Parent = frame
+    })
+    self._sidebar = sidebar
+
     local title = create("TextLabel", {
         Text = "Minimalist UI",
         Font = Enum.Font.GothamSemibold,
-        TextSize = 28,
-        TextColor3 = Color3.fromRGB(220, 220, 220),
+        TextSize = 22,
+        TextColor3 = Color3.fromRGB(200, 200, 210),
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 50),
-        Parent = frame
+        Size = UDim2.new(1, -56, 0, 40),
+        Position = UDim2.new(0, 56, 0, 0),
+        Parent = frame,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Center
     })
     self._title = title
 
-    local tabBar = create("Frame", {
-        Size = UDim2.new(1, 0, 0, 36),
-        Position = UDim2.new(0, 0, 0, 50),
-        BackgroundTransparency = 1,
-        Parent = frame
-    })
-    self._tabBar = tabBar
-
     local content = create("Frame", {
-        Size = UDim2.new(1, -20, 1, -106),
-        Position = UDim2.new(0, 10, 0, 86),
-        BackgroundTransparency = 1,
+        Size = UDim2.new(1, -56, 1, -40),
+        Position = UDim2.new(0, 56, 0, 40),
+        BackgroundColor3 = Color3.fromRGB(28, 29, 34),
+        BorderSizePixel = 0,
         Parent = frame
     })
     self._content = content
@@ -84,7 +90,7 @@ function UILib.new(options)
     return self
 end
 
-function UILib:AddTab(tabName)
+function UILib:AddTab(tabName, icon)
     local tab = {}
     tab._buttons = {}
     tab._frame = create("Frame", {
@@ -96,30 +102,33 @@ function UILib:AddTab(tabName)
     function tab:AddButton(text, callback)
         local btn = create("TextButton", {
             Text = text,
-            Font = Enum.Font.Gotham,
+            Font = Enum.Font.Code,
             TextSize = 18,
             TextColor3 = Color3.fromRGB(220, 220, 220),
-            BackgroundColor3 = Color3.fromRGB(40, 40, 40),
-            BackgroundTransparency = 0.2,
-            Size = UDim2.new(1, 0, 0, 36),
-            Position = UDim2.new(0, 0, 0, #tab._buttons * 42),
+            BackgroundColor3 = Color3.fromRGB(40, 42, 50),
+            BackgroundTransparency = 0.1,
+            Size = UDim2.new(1, 0, 0, 38),
+            Position = UDim2.new(0, 0, 0, #tab._buttons * 44),
             Parent = tab._frame,
-            BorderSizePixel = 0
+            BorderSizePixel = 0,
+            AutoButtonColor = true
         })
         btn.MouseButton1Click:Connect(callback)
         table.insert(tab._buttons, btn)
         return btn
     end
     local tabBtn = create("TextButton", {
-        Text = tabName,
-        Font = Enum.Font.Gotham,
-        TextSize = 18,
-        TextColor3 = Color3.fromRGB(180, 180, 180),
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, 100, 1, 0),
-        Position = UDim2.new(0, #self._tabs * 110, 0, 0),
-        Parent = self._tabBar,
-        BorderSizePixel = 0
+        Text = icon or tabName,
+        Font = Enum.Font.Code,
+        TextSize = 22,
+        TextColor3 = Color3.fromRGB(180, 180, 200),
+        BackgroundColor3 = Color3.fromRGB(32, 34, 37),
+        BackgroundTransparency = 0,
+        Size = UDim2.new(0, 44, 0, 44),
+        Position = UDim2.new(0, 6, 0, 6 + (#self._tabs * 50)),
+        Parent = self._sidebar,
+        BorderSizePixel = 0,
+        AutoButtonColor = true
     })
     tabBtn.MouseButton1Click:Connect(function()
         for _, t in ipairs(self._tabs) do
@@ -127,14 +136,21 @@ function UILib:AddTab(tabName)
         end
         tab._frame.Visible = true
         self._activeTab = tab
+        -- Highlight selected tab
+        for _, b in ipairs(self._tabButtons) do
+            b.BackgroundColor3 = Color3.fromRGB(32, 34, 37)
+        end
+        tabBtn.BackgroundColor3 = Color3.fromRGB(44, 48, 54)
     end)
     table.insert(self._tabs, tab)
     table.insert(self._tabButtons, tabBtn)
     if #self._tabs == 1 then
         tab._frame.Visible = true
         self._activeTab = tab
+        tabBtn.BackgroundColor3 = Color3.fromRGB(44, 48, 54)
     end
     return tab
 end
+
 
 return UILib
