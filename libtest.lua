@@ -54,7 +54,7 @@ function UILib.new(options)
     local titleBar = create("Frame", {
         Size = UDim2.new(1, 0, 0, 40),
         Position = UDim2.new(0, 0, 0, 0),
-        BackgroundColor3 = Color3.fromRGB(28, 29, 34),
+        BackgroundColor3 = Color3.fromRGB(38, 41, 54), -- More contrast
         BorderSizePixel = 0,
         Parent = frame,
         Active = true,
@@ -88,24 +88,21 @@ function UILib.new(options)
 
     local title = create("TextLabel", {
         Text = "Minimalist UI",
-        Font = Enum.Font.GothamSemibold,
+        Font = Enum.Font.FredokaOne,
         TextSize = 22,
         TextColor3 = Color3.fromRGB(200, 200, 210),
         BackgroundTransparency = 1,
         Size = UDim2.new(1, -90, 1, 0),
-        Position = UDim2.new(0, 0, 0, 0),
+        Position = UDim2.new(0, 16, 0, 0), -- Slightly right
         Parent = titleBar,
         TextXAlignment = Enum.TextXAlignment.Left,
         TextYAlignment = Enum.TextYAlignment.Center
     })
     self._title = title
 
-    -- Minimize button
-    local minimizeBtn = create("TextButton", {
-        Text = "–", -- minimalist dash
-        Font = Enum.Font.Gotham,
-        TextSize = 24,
-        TextColor3 = Color3.fromRGB(180, 180, 200),
+    -- Minimize button (ImageButton)
+    local minimizeBtn = create("ImageButton", {
+        Image = "rbxassetid://130508082013398",
         BackgroundTransparency = 1,
         Size = UDim2.new(0, 32, 0, 32),
         Position = UDim2.new(1, -64, 0.5, -16),
@@ -116,12 +113,9 @@ function UILib.new(options)
     local minimizeCorner = create("UICorner", { CornerRadius = UDim.new(0, 8) })
     minimizeCorner.Parent = minimizeBtn
 
-    -- Close button
-    local closeBtn = create("TextButton", {
-        Text = "✕",
-        Font = Enum.Font.Gotham,
-        TextSize = 20,
-        TextColor3 = Color3.fromRGB(220, 80, 80),
+    -- Close button (ImageButton)
+    local closeBtn = create("ImageButton", {
+        Image = "rbxassetid://71931004537385",
         BackgroundTransparency = 1,
         Size = UDim2.new(0, 32, 0, 32),
         Position = UDim2.new(1, -32, 0.5, -16),
@@ -168,9 +162,19 @@ function UILib.new(options)
     sidebarCorner.Parent = sidebar
     self._sidebar = sidebar
 
-    local content = create("Frame", {
-        Size = UDim2.new(1, -56, 1, -40),
+    -- Divider line between sidebar and content
+    local divider = create("Frame", {
+        Size = UDim2.new(0, 2, 1, -40),
         Position = UDim2.new(0, 56, 0, 40),
+        BackgroundColor3 = Color3.fromRGB(44, 48, 54),
+        BorderSizePixel = 0,
+        Parent = frame
+    })
+    divider.ZIndex = 2
+
+    local content = create("Frame", {
+        Size = UDim2.new(1, -58, 1, -40),
+        Position = UDim2.new(0, 58, 0, 40),
         BackgroundColor3 = Color3.fromRGB(28, 29, 34),
         BorderSizePixel = 0,
         Parent = frame
