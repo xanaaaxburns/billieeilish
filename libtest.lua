@@ -100,9 +100,12 @@ function UILib.new(options)
     })
     self._title = title
 
-    -- Minimize button (ImageButton)
-    local minimizeBtn = create("ImageButton", {
-        Image = "rbxassetid://130508082013398",
+    -- Minimize button (TextButton, emoji)
+    local minimizeBtn = create("TextButton", {
+        Text = "–",
+        Font = Enum.Font.Gotham,
+        TextSize = 24,
+        TextColor3 = Color3.fromRGB(180, 180, 200),
         BackgroundTransparency = 1,
         Size = UDim2.new(0, 32, 0, 32),
         Position = UDim2.new(1, -64, 0.5, -16),
@@ -113,9 +116,12 @@ function UILib.new(options)
     local minimizeCorner = create("UICorner", { CornerRadius = UDim.new(0, 8) })
     minimizeCorner.Parent = minimizeBtn
 
-    -- Close button (ImageButton)
-    local closeBtn = create("ImageButton", {
-        Image = "rbxassetid://71931004537385",
+    -- Close button (TextButton, emoji)
+    local closeBtn = create("TextButton", {
+        Text = "✕",
+        Font = Enum.Font.Gotham,
+        TextSize = 20,
+        TextColor3 = Color3.fromRGB(220, 80, 80),
         BackgroundTransparency = 1,
         Size = UDim2.new(0, 32, 0, 32),
         Position = UDim2.new(1, -32, 0.5, -16),
@@ -266,7 +272,7 @@ function UILib:AddTab(tabName, icon)
     end
     local tabBtn = create("TextButton", {
         Text = icon or tabName or "❓",
-        Font = Enum.Font.Code,
+        Font = Enum.Font.Gotham,
         TextSize = 28,
         TextColor3 = Color3.fromRGB(180, 180, 200),
         BackgroundColor3 = Color3.fromRGB(32, 34, 37),
