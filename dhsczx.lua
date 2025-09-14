@@ -24,7 +24,7 @@ c =
     end
 )
 
-task.wait(3)
+task.wait(2)
 
 local loadstring_code = "loadstring" 
 local StarterGui = game:GetService("StarterGui")
@@ -33,7 +33,7 @@ StarterGui:SetCore("SendNotification", {
 	Title = "Da Hood Bypass enabled",
 	Text = "Do not rejoin this server!",
 	Duration = 10,
-    Icon = "rbxassetid://126864685454351",
+    Icon = "rbxassetid://112648799794015",
 })
 
 task.wait(3)
@@ -52,7 +52,7 @@ StarterGui:SetCore("SendNotification", {
     Duration = 10,
     Button1 = "Yes",
     Button2 = "No",
-    Icon = "rbxassetid://126864685454351",
+    Icon = "rbxassetid://112648799794015",
     Callback = iyCallback
 })
 
@@ -72,6 +72,6 @@ StarterGui:SetCore("SendNotification", {
     Duration = 10,
     Button1 = "Yes",
     Button2 = "No",
-    Icon = "rbxassetid://71097348134395",
+    Icon = "rbxassetid://139253564568023",
     Callback = xkCallback
 })
