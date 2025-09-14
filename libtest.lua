@@ -34,11 +34,11 @@ function UILib.new(options)
 
     local frame = create("Frame", {
         Size = UDim2.new(0, 480, 0, 320),
-        Position = UDim2.new(0.5, -240, 0.5, -160),
+        Position = UDim2.new(0.5, 0, 0.5, 0), -- Centered
+        AnchorPoint = Vector2.new(0.5, 0.5),
         BackgroundColor3 = Color3.fromRGB(23, 23, 28),
         BackgroundTransparency = 0,
         BorderSizePixel = 0,
-        AnchorPoint = Vector2.new(0.5, 0.5),
         Parent = screenGui,
         Active = true,
         Draggable = false
@@ -58,8 +58,29 @@ function UILib.new(options)
         BorderSizePixel = 0,
         Parent = frame,
         Active = true,
-        Draggable = true
+        Draggable = false -- We'll handle dragging manually
     })
+    -- Custom dragging logic for the whole UI
+    local dragging = false
+    local dragStart, startPos
+    titleBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = frame.Position
+        end
+    end)
+    titleBar.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = input.Position - dragStart
+            frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
     local titleBarCorner = create("UICorner", {
         CornerRadius = UDim.new(0, 12)
     })
@@ -71,13 +92,68 @@ function UILib.new(options)
         TextSize = 22,
         TextColor3 = Color3.fromRGB(200, 200, 210),
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 1, 0),
+        Size = UDim2.new(1, -90, 1, 0),
         Position = UDim2.new(0, 0, 0, 0),
         Parent = titleBar,
         TextXAlignment = Enum.TextXAlignment.Left,
         TextYAlignment = Enum.TextYAlignment.Center
     })
     self._title = title
+
+    -- Minimize button
+    local minimizeBtn = create("TextButton", {
+        Text = "–", -- minimalist dash
+        Font = Enum.Font.Gotham,
+        TextSize = 24,
+        TextColor3 = Color3.fromRGB(180, 180, 200),
+        BackgroundTransparency = 1,
+        Size = UDim2.new(0, 32, 0, 32),
+        Position = UDim2.new(1, -64, 0.5, -16),
+        Parent = titleBar,
+        BorderSizePixel = 0,
+        AutoButtonColor = true
+    })
+    local minimizeCorner = create("UICorner", { CornerRadius = UDim.new(0, 8) })
+    minimizeCorner.Parent = minimizeBtn
+
+    -- Close button
+    local closeBtn = create("TextButton", {
+        Text = "✕",
+        Font = Enum.Font.Gotham,
+        TextSize = 20,
+        TextColor3 = Color3.fromRGB(220, 80, 80),
+        BackgroundTransparency = 1,
+        Size = UDim2.new(0, 32, 0, 32),
+        Position = UDim2.new(1, -32, 0.5, -16),
+        Parent = titleBar,
+        BorderSizePixel = 0,
+        AutoButtonColor = true
+    })
+    local closeCorner = create("UICorner", { CornerRadius = UDim.new(0, 8) })
+    closeCorner.Parent = closeBtn
+
+    -- Minimize logic
+    local minimized = false
+    local function setMinimized(state)
+        minimized = state
+        frame.Visible = not minimized
+    end
+    minimizeBtn.MouseButton1Click:Connect(function()
+        setMinimized(not minimized)
+    end)
+
+    -- Keybind for minimize (P)
+    game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+        if gameProcessed then return end
+        if input.KeyCode == Enum.KeyCode.P then
+            setMinimized(not minimized)
+        end
+    end)
+
+    -- Close logic
+    closeBtn.MouseButton1Click:Connect(function()
+        screenGui:Destroy()
+    end)
 
     local sidebar = create("Frame", {
         Size = UDim2.new(0, 56, 1, -40),
@@ -105,7 +181,7 @@ function UILib.new(options)
     contentCorner.Parent = content
     self._content = content
 
-    -- Keybind to destroy UI
+    -- Keybind to destroy UI (Q)
     local keybind = options.Keybind or Enum.KeyCode.Q
     self._conn = UserInputService.InputBegan:Connect(function(input, gameProcessed)
         if gameProcessed then return end
@@ -154,7 +230,7 @@ function UILib:AddTab(tabName, icon)
         return btn
     end
     local tabBtn = create("TextButton", {
-        Text = icon or "❓",
+        Text = icon or tabName or "❓",
         Font = Enum.Font.Code,
         TextSize = 28,
         TextColor3 = Color3.fromRGB(180, 180, 200),
