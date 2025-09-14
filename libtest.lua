@@ -173,8 +173,8 @@ function UILib.new(options)
     divider.ZIndex = 2
 
     local content = create("Frame", {
-        Size = UDim2.new(1, -58, 1, -40),
-        Position = UDim2.new(0, 58, 0, 40),
+        Size = UDim2.new(1, -60, 1, -44),
+        Position = UDim2.new(0, 60, 0, 42),
         BackgroundColor3 = Color3.fromRGB(28, 29, 34),
         BorderSizePixel = 0,
         Parent = frame
