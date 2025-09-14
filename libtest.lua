@@ -149,18 +149,49 @@ function UILib.new(options)
         screenGui:Destroy()
     end)
 
-    local sidebar = create("Frame", {
-        Size = UDim2.new(0, 56, 1, -40),
-        Position = UDim2.new(0, 0, 0, 40),
-        BackgroundColor3 = Color3.fromRGB(32, 34, 37),
-        BorderSizePixel = 0,
-        Parent = frame
-    })
-    local sidebarCorner = create("UICorner", {
-        CornerRadius = UDim.new(0, 14)
-    })
-    sidebarCorner.Parent = sidebar
-    self._sidebar = sidebar
+        local sidebar = create("Frame", {
+            Size = UDim2.new(0, 56, 1, -40),
+            Position = UDim2.new(0, 0, 0, 40),
+            BackgroundColor3 = Color3.fromRGB(32, 34, 37),
+            BorderSizePixel = 0,
+            Parent = frame
+        })
+        local sidebarCorner = create("UICorner", {
+            CornerRadius = UDim.new(0, 14)
+        })
+        sidebarCorner.Parent = sidebar
+        self._sidebar = sidebar
+
+        -- Dark/Light mode toggle
+        local isDark = true
+        local function setTheme(dark)
+            isDark = dark
+            frame.BackgroundColor3 = dark and Color3.fromRGB(23, 23, 28) or Color3.fromRGB(230, 230, 235)
+            titleBar.BackgroundColor3 = dark and Color3.fromRGB(38, 41, 54) or Color3.fromRGB(245, 245, 250)
+            sidebar.BackgroundColor3 = dark and Color3.fromRGB(32, 34, 37) or Color3.fromRGB(220, 220, 225)
+            divider.BackgroundColor3 = dark and Color3.fromRGB(44, 48, 54) or Color3.fromRGB(200, 200, 210)
+            content.BackgroundColor3 = dark and Color3.fromRGB(28, 29, 34) or Color3.fromRGB(245, 245, 250)
+            title.TextColor3 = dark and Color3.fromRGB(200, 200, 210) or Color3.fromRGB(40, 40, 50)
+        end
+        local themeBtn = create("TextButton", {
+            Text = isDark and "🌙" or "☀️",
+            Font = Enum.Font.Gotham,
+            TextSize = 20,
+            TextColor3 = Color3.fromRGB(180, 180, 200),
+            BackgroundTransparency = 1,
+            Size = UDim2.new(0, 32, 0, 32),
+            Position = UDim2.new(0, 12, 1, -44),
+            Parent = sidebar,
+            BorderSizePixel = 0,
+            AutoButtonColor = true
+        })
+        local themeCorner = create("UICorner", { CornerRadius = UDim.new(0, 8) })
+        themeCorner.Parent = themeBtn
+        themeBtn.MouseButton1Click:Connect(function()
+            setTheme(not isDark)
+            themeBtn.Text = isDark and "🌙" or "☀️"
+        end)
+        setTheme(true)
 
     -- Divider line between sidebar and content
     local divider = create("Frame", {
@@ -273,4 +304,3 @@ function UILib:AddTab(tabName, icon)
 end
 
 
-return UILib
