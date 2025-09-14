@@ -45,6 +45,11 @@ function UILib.new(options)
     })
     self._frame = frame
 
+    local frameCorner = create("UICorner", {
+        CornerRadius = UDim.new(0, 14)
+    })
+    frameCorner.Parent = frame
+
     local sidebar = create("Frame", {
         Size = UDim2.new(0, 56, 1, 0),
         Position = UDim2.new(0, 0, 0, 0),
@@ -52,6 +57,10 @@ function UILib.new(options)
         BorderSizePixel = 0,
         Parent = frame
     })
+    local sidebarCorner = create("UICorner", {
+        CornerRadius = UDim.new(0, 14)
+    })
+    sidebarCorner.Parent = sidebar
     self._sidebar = sidebar
 
     local title = create("TextLabel", {
@@ -75,6 +84,10 @@ function UILib.new(options)
         BorderSizePixel = 0,
         Parent = frame
     })
+    local contentCorner = create("UICorner", {
+        CornerRadius = UDim.new(0, 12)
+    })
+    contentCorner.Parent = content
     self._content = content
 
     -- Keybind to destroy UI
@@ -99,6 +112,10 @@ function UILib:AddTab(tabName, icon)
         Parent = self._content,
         Visible = false
     })
+    local tabFrameCorner = create("UICorner", {
+        CornerRadius = UDim.new(0, 10)
+    })
+    tabFrameCorner.Parent = tab._frame
     function tab:AddButton(text, callback)
         local btn = create("TextButton", {
             Text = text,
@@ -113,14 +130,18 @@ function UILib:AddTab(tabName, icon)
             BorderSizePixel = 0,
             AutoButtonColor = true
         })
+        local btnCorner = create("UICorner", {
+            CornerRadius = UDim.new(0, 8)
+        })
+        btnCorner.Parent = btn
         btn.MouseButton1Click:Connect(callback)
         table.insert(tab._buttons, btn)
         return btn
     end
     local tabBtn = create("TextButton", {
-        Text = icon or tabName,
+        Text = icon or "❓",
         Font = Enum.Font.Code,
-        TextSize = 22,
+        TextSize = 28,
         TextColor3 = Color3.fromRGB(180, 180, 200),
         BackgroundColor3 = Color3.fromRGB(32, 34, 37),
         BackgroundTransparency = 0,
@@ -130,6 +151,10 @@ function UILib:AddTab(tabName, icon)
         BorderSizePixel = 0,
         AutoButtonColor = true
     })
+    local tabBtnCorner = create("UICorner", {
+        CornerRadius = UDim.new(0, 12)
+    })
+    tabBtnCorner.Parent = tabBtn
     tabBtn.MouseButton1Click:Connect(function()
         for _, t in ipairs(self._tabs) do
             t._frame.Visible = false
