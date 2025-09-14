@@ -172,12 +172,12 @@ function UILib.new(options)
         local isDark = true
         local function setTheme(dark)
             isDark = dark
-            frame.BackgroundColor3 = dark and Color3.fromRGB(23, 23, 28) or Color3.fromRGB(230, 230, 235)
-            titleBar.BackgroundColor3 = dark and Color3.fromRGB(38, 41, 54) or Color3.fromRGB(245, 245, 250)
-            sidebar.BackgroundColor3 = dark and Color3.fromRGB(32, 34, 37) or Color3.fromRGB(220, 220, 225)
-            divider.BackgroundColor3 = dark and Color3.fromRGB(44, 48, 54) or Color3.fromRGB(200, 200, 210)
-            content.BackgroundColor3 = dark and Color3.fromRGB(28, 29, 34) or Color3.fromRGB(245, 245, 250)
-            title.TextColor3 = dark and Color3.fromRGB(200, 200, 210) or Color3.fromRGB(40, 40, 50)
+            frame.BackgroundColor3 = dark and Color3.fromRGB(23, 23, 28) or Color3.fromRGB(235, 235, 240) -- softer offwhite
+            titleBar.BackgroundColor3 = dark and Color3.fromRGB(38, 41, 54) or Color3.fromRGB(225, 225, 230) -- light gray
+            sidebar.BackgroundColor3 = dark and Color3.fromRGB(32, 34, 37) or Color3.fromRGB(220, 220, 225) -- muted gray
+            divider.BackgroundColor3 = dark and Color3.fromRGB(44, 48, 54) or Color3.fromRGB(210, 210, 215) -- soft divider
+            content.BackgroundColor3 = dark and Color3.fromRGB(28, 29, 34) or Color3.fromRGB(240, 240, 245) -- gentle light
+            title.TextColor3 = dark and Color3.fromRGB(200, 200, 210) or Color3.fromRGB(60, 60, 80) -- less harsh
         end
         local themeBtn = create("TextButton", {
             Text = isDark and "🌙" or "☀️",
@@ -242,7 +242,8 @@ function UILib:AddTab(tabName, icon)
         Size = UDim2.new(1, 0, 1, 0),
         BackgroundTransparency = 1,
         Parent = self._content,
-        Visible = false
+        Visible = false,
+        ZIndex = 2
     })
     local tabFrameCorner = create("UICorner", {
         CornerRadius = UDim.new(0, 10)
@@ -251,16 +252,17 @@ function UILib:AddTab(tabName, icon)
     function tab:AddButton(text, callback)
         local btn = create("TextButton", {
             Text = text,
-            Font = Enum.Font.Code,
+            Font = Enum.Font.Gotham,
             TextSize = 18,
             TextColor3 = Color3.fromRGB(220, 220, 220),
             BackgroundColor3 = Color3.fromRGB(40, 42, 50),
             BackgroundTransparency = 0.1,
-            Size = UDim2.new(1, 0, 0, 38),
-            Position = UDim2.new(0, 0, 0, #tab._buttons * 44),
+            Size = UDim2.new(0.92, 0, 0, 40),
+            Position = UDim2.new(0.04, 0, 0, #tab._buttons * 48),
             Parent = tab._frame,
             BorderSizePixel = 0,
-            AutoButtonColor = true
+            AutoButtonColor = true,
+            ZIndex = 3
         })
         local btnCorner = create("UICorner", {
             CornerRadius = UDim.new(0, 8)
@@ -278,10 +280,11 @@ function UILib:AddTab(tabName, icon)
         BackgroundColor3 = Color3.fromRGB(32, 34, 37),
         BackgroundTransparency = 0,
         Size = UDim2.new(0, 44, 0, 44),
-        Position = UDim2.new(0, 6, 0, 6 + (#self._tabs * 50)),
+        Position = UDim2.new(0, 6, 0, 6 + (#self._tabs * 54)),
         Parent = self._sidebar,
         BorderSizePixel = 0,
-        AutoButtonColor = true
+        AutoButtonColor = true,
+        ZIndex = 3
     })
     local tabBtnCorner = create("UICorner", {
         CornerRadius = UDim.new(0, 12)
