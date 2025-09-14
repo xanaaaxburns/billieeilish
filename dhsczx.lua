@@ -38,36 +38,40 @@ StarterGui:SetCore("SendNotification", {
 
 task.wait(3)
 
-StarterGui:SetCore("SendNotification", {
-	Title = "Infinite Yield",
-	Text = "Do you want to run Infinite Yield?",
-	Duration = 10,
-	Button1 = "Yes",
-	Button2 = "No",
-    Icon = "rbxassetid://126864685454351",
-    Callback = function(button)
-        if button == "Yes" then
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/xanaaaxburns/billieeilish/refs/heads/main/bilyield'))()
-        else
-            return
-        end
+local iyCallback = Instance.new("BindableFunction")
+iyCallback.OnInvoke = function(button)
+    if button == "Yes" then
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/xanaaaxburns/billieeilish/refs/heads/main/bilyield'))()
+    else
+        return
     end
+end
+StarterGui:SetCore("SendNotification", {
+    Title = "Infinite Yield",
+    Text = "Do you want to run Infinite Yield?",
+    Duration = 10,
+    Button1 = "Yes",
+    Button2 = "No",
+    Icon = "rbxassetid://126864685454351",
+    Callback = iyCallback
 })
 
 task.wait(5)
 
-StarterGui:SetCore("SendNotification", {
-	Title = "XK5NG GUI",
-	Text = "Do you want to run XK5NG GUI?",
-	Duration = 10,
-	Button1 = "Yes",
-	Button2 = "No",
-    Icon = "rbxassetid://71097348134395",
-    Callback = function(button)
-        if button == "Yes" then
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/xanaaaxburns/billieeilish/refs/heads/main/kg5g.lua'))()
-        else
-            return
-        end
+local xkCallback = Instance.new("BindableFunction")
+xkCallback.OnInvoke = function(button)
+    if button == "Yes" then
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/xanaaaxburns/billieeilish/refs/heads/main/kg5g.lua'))()
+    else
+        return
     end
+end
+StarterGui:SetCore("SendNotification", {
+    Title = "XK5NG GUI",
+    Text = "Do you want to run XK5NG GUI?",
+    Duration = 10,
+    Button1 = "Yes",
+    Button2 = "No",
+    Icon = "rbxassetid://71097348134395",
+    Callback = xkCallback
 })
