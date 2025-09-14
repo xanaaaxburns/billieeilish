@@ -304,3 +304,7 @@ function UILib:AddTab(tabName, icon)
 end
 
 
+
+return UILib
+
+
